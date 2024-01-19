@@ -1,7 +1,8 @@
 ﻿namespace Register.Manegement.Application.Responses.UserRegister
 {
-    public class UserRegisterPostResponse
+    public class UserRegisterPostResponse : BaseResponse
     {
-        public string UserId { get; set; }
+        public Guid AuthenticationLogin { get; set; }
+        public Guid AuthenticationPassWord { get; set; }
     }
 }

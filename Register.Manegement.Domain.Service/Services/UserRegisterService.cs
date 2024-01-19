@@ -1,4 +1,6 @@
-﻿using Register.Manegement.Domain.DTOs;
+﻿using Register.Manegement.Domain.DTOs.Requests;
+using Register.Manegement.Domain.DTOs.Responses;
+using Register.Manegement.Domain.Entitys;
 using Register.Manegement.Domain.Service.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -12,7 +14,32 @@ namespace Register.Manegement.Domain.Service.Services
     {
         public CreateUserResponseDTO CreateUser(CreateUserRequestDTO request)
         {
-            return new CreateUserResponseDTO() { Id = "OK"};
+            var entity = new UserEntity()
+            {
+                UserName = request.UserName,
+                IsAdmin = request.IsAdmin,
+                AuthenticationLogin = Guid.NewGuid(),
+                AuthenticationPassword = Guid.NewGuid(),
+                PasswordExpirationDate = DateTime.Now.AddMonths(3),
+            };
+
+            //salvar Entity no banco de dados
+
+            return new CreateUserResponseDTO()
+            {
+                AuthenticationLogin = entity.AuthenticationLogin,
+                AuthenticationPassword = entity.AuthenticationPassword,
+            };
+        }
+
+        public GetUserByDateResponseDTO GetByDate(GetUserByDateRequestDTO request, Guid login,Guid password)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void GetById(Guid request, Guid login, Guid password)
+        {
+            throw new NotImplementedException();
         }
     }
 }

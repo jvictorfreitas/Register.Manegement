@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Register.Manegement.Domain.DTOs
+namespace Register.Manegement.Domain.DTOs.Requests
 {
     public class CreateUserRequestDTO
     {
-        public string Name { get; set; }
+        public string UserName { get; set; }
+        public bool IsAdmin { get; set; }
     }
 }

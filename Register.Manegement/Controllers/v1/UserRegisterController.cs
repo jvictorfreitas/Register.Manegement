@@ -7,26 +7,89 @@ namespace Register.Manegement.Controllers.v1
 {
     [ApiController]
     [Route("[controller]")]
-    public class UserRegisterController
+    public class UserRegisterController : ControllerBase
     {
-        private readonly ILogger<UserRegisterController> _logger;
         private readonly IUserRegisterApplication _Application;
-        
-        public UserRegisterController(ILogger<UserRegisterController> logger
-            , IUserRegisterApplication application)
+
+        public UserRegisterController(IUserRegisterApplication application)
         {
-            _logger = logger;
             _Application = application;
         }
 
+        /// <summary>
+        /// Registra um usuário e retorno um login e senha
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [HttpPost]
         [ProducesResponseType<UserRegisterPostResponse>(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult<UserRegisterPostResponse> Post(UserRegisterPostRequest request)
+        public IActionResult Post(UserRegisterPostRequest request) 
         {
-            _logger.LogInformation($"process next request: {request}");
             var result = _Application.Post(request);
-            return new JsonResult(result);
+            if(result.Success)
+                return Ok(result);
+
+            return BadRequest(result);
+        }
+
+        /// <summary>
+        /// Retorna uma Lista de usuários entre as datas estabelecidas
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="login"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public IActionResult Get(UserRegisterGetRequest request
+            , [FromHeader] Guid login
+            , [FromHeader] Guid password)
+        {
+            var result = _Application.Get(request,login,password);
+            if(result.Success)
+                return Ok(result);
+
+            return BadRequest(result);
+        }
+
+        [HttpGet("{userLogin}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public IActionResult Get(Guid userLogin
+            , [FromHeader] Guid login
+            , [FromHeader] Guid password)
+        {
+            var result = _Application.Get(userLogin, login, password);
+            if (result.Success)
+                return Ok(result);
+
+            return BadRequest(result);
+        }
+
+        [HttpPut("{userLogin}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public IActionResult Put(Guid userLogin
+            ,UserRegisterPutRequest request
+            ,[FromHeader]Guid login
+            ,[FromHeader]Guid password)
+        {
+            var result = _Application.Put(request,userLogin,login,password);
+            if (result.Success)
+                return Ok(result);
+
+            return BadRequest(result);
+        }
+
+        [HttpDelete("{userLogin}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public IActionResult Delete(Guid userLogin
+            ,[FromHeader]Guid login
+            ,[FromHeader]Guid password)
+        {
+            var result = _Application.Get(userLogin, login, password);
+            if (result.Success)
+                return Ok(result);
+
+            return BadRequest(result);
         }
     }
 }

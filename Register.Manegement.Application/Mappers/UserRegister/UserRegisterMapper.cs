@@ -1,6 +1,7 @@
 ﻿using Register.Manegement.Application.Requests.UserRegister;
 using Register.Manegement.Application.Responses.UserRegister;
-using Register.Manegement.Domain.DTOs;
+using Register.Manegement.Domain.DTOs.Requests;
+using Register.Manegement.Domain.DTOs.Responses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,15 +16,17 @@ namespace Register.Manegement.Application.Mappers.UserRegister
         {
             return new CreateUserRequestDTO
             {
-                Name = request.Name
+                UserName = request.UserName,
+                IsAdmin = request.IsAdmin,
             };
         }
 
         public static UserRegisterPostResponse CreateUserDTOToPostResponse(CreateUserResponseDTO response)
         {
-            return new UserRegisterPostResponse
+            return new UserRegisterPostResponse()
             {
-                UserId = response.Id
+                AuthenticationLogin = response.AuthenticationLogin,
+                AuthenticationPassWord = response.AuthenticationPassword
             };
         }
     }
